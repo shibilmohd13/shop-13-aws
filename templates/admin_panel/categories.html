@@ -1,0 +1,62 @@
+{% extends 'admin_panel/admin_base.html' %}
+{% load static %}
+{% block title %} Categories{% endblock title %}
+{% block categories %}{% endblock categories %}
+{% block content %}
+
+<main id="main" class="main">
+
+    <div class="d-flex justify-content-between">
+        <div class="pagetitle">
+            <h1>Categories</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">Admin</li>
+                    <li class="breadcrumb-item active">Categories</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+        <a href="{% url 'add_categories' %}" class="btn btn-primary btn-rounded h-50">Add Categories</a>
+    </div>
+
+        <!-- Recent Sales -->
+        <div class="col-12">
+            <div class="card recent-sales overflow-auto">
+
+                <div class="card-body">
+                    <table class="table table-borderless datatable mt-3">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Category</th>
+                                <th>List / Unlist</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            
+                        {% for cat in categories %}
+                            <tr>
+                                <td>{{cat.id}}</td>
+                                <td>{{cat.name}}</td>
+                                {% if cat.is_listed %}
+                                <td><a href='category_status/{{cat.id}}'><span class="btn btn-danger">Unlist</span></a></td>
+                                {% else %}
+                                <td><a href='category_status/{{cat.id}}'><span class="btn btn-success">List</span></a></td>
+                                {% endif %}
+                                <td style='font-size:20px'><a href="edit_categories/{{cat.id}}"><i class="bi bi-pencil-square text-warning"></i></a></td>
+                            </tr>
+
+                        
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+        </div><!-- End Recent Sales -->
+
+    </main><!-- End #main -->
+{% endblock content %}

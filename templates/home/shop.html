@@ -1,0 +1,262 @@
+{% extends 'home/base.html' %}
+{% load static %} 
+{% block css %}<link href="{% static 'home/css/product.css' %}" rel="stylesheet"/>{% endblock css %}
+{% block shop %}active{% endblock shop %}
+{% block title %} Shop {% endblock title %}
+{% block content%}
+<section id="center" class="center_o pt-4 pb-4 bg-light">
+  <div class="container-xl">
+    <div class="row center_o1 text-center">
+      <div class="col-md-12">
+        <h1>SHOP</h1>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="prod_pg" class="pb-4 bg_light_1">
+  <div class="container-fluid">
+    <div class="row prod_pg1">
+      <div class="col-md-12 col-lg-3">
+        <form method="get">
+        <div class="prod_pg1l">
+          <!-- Replace the existing code with the updated code below -->
+
+          <div class="prod_pg1l1 bg-white p-4 mt-4">
+            <h6 class="mb-3">PRODUCT CATEGORIES</h6>
+            {% for item in categories_nav %}
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" value="{{ item.id }}" id="{{ item.name }}" name="category" {% if request.GET.category == item.id %} checked {% endif %}>
+                    <label class="form-check-label" for="{{ item.name }}">
+                      {{ item.name }}
+                    </label>
+                </div>
+            {% endfor %}
+          </div>
+
+          
+          
+          <div class="prod_pg1l1 bg-white p-4 mt-4">
+            <h6 class="mb-3">FILTER BY PRICE</h6>
+            
+            <input type="range" class="form-range" id="customRange1" name="pricefilter"  value="{% if request.GET.pricefilter %}{{ request.GET.pricefilter }}{% endif %}" />
+            <h6 class="mb-0 col_light font_13 mt-3">MAX PRICE: &#8377;<span id="maxPriceDisplay">100000</span></h6>
+          </div>
+          
+
+          <!-- Replace the existing code with the updated code below -->
+
+          <div class="prod_pg1l1 bg-white p-4 mt-4">
+            <h6 class="mb-3">PRODUCT BRAND</h6>
+            {% for item in brands_nav %}
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" value="{{ item.id }}" id="{{ item.name }}" name="brand">
+                    <label class="form-check-label" for="{{ item.name }}">
+                        {{ item.name }}
+                    </label>
+                </div>
+            {% endfor %}
+          </div>
+          <button class="button_1 border-0">APPLY FILTER</button>
+
+
+        </div>
+      </form>
+      </div>
+      <div class="col-md-12 col-lg-9">
+        <div class="prod_pg1r">
+          <div class="prod_pg1r2 row">
+            {% for item in page_obj %}
+            <div class="col-md-4 mt-4">
+              <div class="prodinm clearfix">
+                <div class="prod_2im position-relative clearfix">
+                  <div class="prod_2i1 clearfix">
+                    <div class="grid clearfix">
+                      <figure class="effect-jazz mb-0">
+                        <a href="../product_details/{{item.colorvarient_set.first.id}}"
+                          ><img
+                            src="{{item.colorvarient_set.first.productimage_set.all.last.image.url}}"
+                            height = '300px'
+                            alt="abc"
+                        /></a>
+                      </figure>
+                    </div>
+                  </div>
+
+                  <div class="prod_2i3 clearfix position-absolute w-100">
+                    <h6
+                      class="bg_yell d-inline-block pt-1 pb-1 font_13 text-white ps-3 pe-3"
+                    >
+                      NEW
+                    </h6>
+                    {% if item.colorvarient_set.first.discount > 0 %}
+                    <h6
+                      class="bg_yell d-inline-block pt-1 pb-1 font_13 text-white ps-3 pe-3 pull-right"
+                    >
+                      {{item.colorvarient_set.first.discount}}%
+                    </h6>
+                    {% endif %}
+                  </div>
+                  <div
+                    class="prod_2in clearfix position-absolute bg-light w-100 p-3 text-center"
+                  >
+                    <ul class="mb-0">
+                      <li class="d-inline-block me-3">
+                        <a href="#"><i class="fa fa-heart"></i></a>
+                      </li>
+                      {% comment %} <li class="d-inline-block me-3">
+                        <a href="#"
+                          ><i class="fa fa-shopping-cart"></i
+                        ></a>
+                      </li> {% endcomment %}
+                      <li class="d-inline-block">
+                        <a href="../product_details/{{item.colorvarient_set.first.id}}"><i class="fa fa-eye"></i></a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="prod_2i2 pt-4 pb-4 ps-3 pe-3 bg-white clearfix">
+                  <span class="col_yell">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-half-o"></i>
+                  </span>
+                  <h6 class="mt-2">
+                    <a href="../product_details/{{item.colorvarient_set.first.id}}">{{item.name}}</a>
+                  </h6>
+                  <h6 class="font_13">
+                    <a class="col_light" href="../product_details/{{item.colorvarient_set.first.id}}">{{item.category.name}} / {{item.brands.name}}</a>
+                  </h6>
+                  <hr />
+                  <h6 class="fw-normal mb-0">
+                    {% if item.colorvarient_set.first.discount > 0 %}
+                    <span class="text-decoration-line-through col_light">	&#8377;{{item.colorvarient_set.first.price}}</span>
+                    {% endif %}
+                    <span class="pull-right fw-bold col_yell">&#8377;{{item.colorvarient_set.first.discounted_price}}</span>
+                  </h6>
+                </div>
+              </div>
+            </div>
+            {% empty %}
+
+            <div class="empty-cart-message">
+              <center>
+                <i class="fa-solid fa-shopping-cart my-3 opacity-75" style="color: #000000; font-size:100px"></i>
+                <h2 class="cart-heading" >No Products Match</h2>
+                <p class="cart-subheading text-secondary">There are no items match with your filter <br> Search for other items</p>
+                <a href="{% url "shop" %}" class="btn btn-warning rounded-0 shop-now-btn text-light fw-bold px-4 py-2">SHOW ALL PRODUCTS</a>
+              </center>
+            </div>
+            
+            {% endfor %}
+
+          </div>
+
+          {% if page_obj.has_previous or page_obj.has_next%}
+          <div class="pages mt-4 row text-center bg_light ms-0 me-0 pt-4 pb-4">
+            <div class="col-md-12">
+              <ul class="mb-0">
+                {% if page_obj.has_previous %}
+                <li>
+                  <a href="?page={{ page_obj.previous_page_number}}"><i class="fa fa-chevron-left"></i></a>
+                </li>
+                {% else %}
+                <li style="opacity:0.3">
+                  <span><i class="fa fa-chevron-left"></i></span>
+                </li>
+                {% endif %}
+
+                {% for item in page_count %}
+                <li {% if page_obj.number == forloop.counter %}class="act"{% endif %}><a href="?page={{forloop.counter}}">{{forloop.counter}}</a></li>
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                <li>
+                  <a href="?page={{ page_obj.next_page_number}}"><i class="fa fa-chevron-right"></i></a>
+                </li>
+                {% else %}
+                <li style="opacity:0.3">
+                  <span><i class="fa fa-chevron-right"></i></span>
+                </li>
+                {% endif %}
+              </ul>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Add this script to the end of your HTML file -->
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Set the maximum price dynamically
+        const maxPrice = 20000;
+
+        // Set the range of the input dynamically
+        const priceFilterInput = document.getElementById('customRange1');
+        if (priceFilterInput) {
+            priceFilterInput.min = 0;
+            priceFilterInput.max = maxPrice;
+            priceFilterInput.step = 100; // Adjust the step as needed
+
+            // Add an event listener for input change
+            priceFilterInput.addEventListener('input', function () {
+                // Update the displayed maximum price as the input changes
+                const maxPriceDisplay = document.getElementById('maxPriceDisplay');
+                if (maxPriceDisplay) {
+                    maxPriceDisplay.textContent = priceFilterInput.value.toLocaleString(); // Format the number with commas
+                }
+            });
+        }
+
+        // Initial update of displayed maximum price
+        const maxPriceDisplay = document.getElementById('maxPriceDisplay');
+        if (maxPriceDisplay) {
+            maxPriceDisplay.textContent = maxPrice.toLocaleString(); // Format the number with commas
+        }
+    });
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      // Get the query parameters from the URL
+      const urlParams = new URLSearchParams(window.location.search);
+
+      // Select the radio button for PRODUCT CATEGORIES based on the 'category' parameter
+      const categoryParam = urlParams.get('category');
+      if (categoryParam) {
+          const categoryRadio = document.querySelector(`input[name="category"][value="${categoryParam}"]`);
+          if (categoryRadio) {
+              categoryRadio.checked = true;
+          }
+      }
+
+      // Select the radio button for PRODUCT BRAND based on the 'brand' parameter
+      const brandParam = urlParams.get('brand');
+      if (brandParam) {
+          const brandRadio = document.querySelector(`input[name="brand"][value="${brandParam}"]`);
+          if (brandRadio) {
+              brandRadio.checked = true;
+          }
+      }
+
+      // Set the pricefilter value based on the 'pricefilter' parameter
+      const priceFilterParam = urlParams.get('pricefilter');
+      console.log(priceFilterParam)
+      const priceFilterInput = document.getElementById('customRange1');
+      console.log(priceFilterInput)
+      if (priceFilterParam && priceFilterInput) {
+          priceFilterInput.value = priceFilterParam;
+      }
+  });
+</script>
+
+{% endblock content %}
